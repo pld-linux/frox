@@ -11,6 +11,8 @@ Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/frox/%{name}-%{version}.tar.g
 Source1:	%{name}.init
 Source2:	%{name}.conf
 URL:		http://frox.sourceforge.net/
+BuildRequires:	autoconf
+BuildRequires:	automake
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -26,6 +28,7 @@ aktywne-pasywne polaczenia.
 
 %prep
 %setup -q
+
 %build
 aclocal
 autoconf

@@ -63,9 +63,10 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,/etc/sysconfig,%{_mandir}/man{5,8}} \
 	$RPM_BUILD_ROOT/var/lib/frox
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
-install src/frox.conf	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
+install src/frox.conf	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 install doc/frox.man	$RPM_BUILD_ROOT%{_mandir}/man8/frox.8
 install doc/frox.conf.man	$RPM_BUILD_ROOT%{_mandir}/man5/frox.5
 install %{SOURCE1}	$RPM_BUILD_ROOT/etc/rc.d/init.d/frox

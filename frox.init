@@ -25,10 +25,10 @@ case "$1" in
 		daemon frox -f /etc/frox.conf
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/frox
-		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ] ; then
+		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ]; then
 			run_cmd "Redirecting FTP traffic" '/usr/sbin/iptables -t nat -A $IPTABLES_RULE'
 		fi
-		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ] ; then
+		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ]; then
 			run_cmd "Redirecting FTP traffic" '/sbin/ipchains -A $IPCHAINS_RULE'
 		fi
 
@@ -39,10 +39,10 @@ case "$1" in
   stop)
 	# Stop daemons.
 	if [ -f /var/lock/subsys/frox ]; then
-		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ] ; then
+		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ]; then
 			run_cmd "Removing FTP traffic redirection" '/usr/sbin/iptables -D $IPTABLES_RULE'
 		fi
-		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ] ; then
+		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ]; then
 			run_cmd "Removing FTP traffic redirection" '/sbin/ipchains -D $IPCHAINS_RULE'
 		fi
 		msg_stopping frox

@@ -63,7 +63,7 @@ fi
 if [ ! -n "`id -u frox 2>/dev/null`" ]; then
 	/usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
 		-g squid -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
-fi		
+fi
 
 %post
 /sbin/chkconfig --add frox
@@ -86,7 +86,7 @@ fi
 if [ "$1" = "0" ]; then
 	/usr/sbin/userdel frox 2> /dev/null
 	/usr/sbin/groupdel frox 2> /dev/null
-fi		
+fi
 
 %files
 %defattr(644,root,root,755)

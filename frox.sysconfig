@@ -1,0 +1,6 @@
+# Set your firewall tool and change LOCALNET to something other :)
+
+#IPTABLES_RULE="PREROUTING -p tcp -s LOCALNET --dport 21 -j REDIRECT --to 2121"
+#IPCHAINS_RULE="input -p tcp -s LOCALNET -d 0/0 21 -j REDIRECT 2121"
+
+

@@ -16,16 +16,21 @@ case "$1" in
   start)
 	# Check if the service is already running?
         if [ ! -f /var/lock/subsys/frox ]; then
+	if [ ! "$IPCHAINS_RULE" ] && [ ! "$IPTABLES_RULE" ]; then
+		echo "Please edit /etc/sysconfig/frox !"
+		exit 1
+	fi
 		msg_starting frox
 		daemon frox -f /etc/frox.conf
 	        RETVAL=$?
     		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/frox
 		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ] ; then
-			action "Redirecting FTP traffic" /usr/sbin/iptables -A $IPTABLES_RULE
+			action "Redirecting FTP traffic" /usr/sbin/iptables -t nat -A $IPTABLES_RULE
 		fi
 		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ] ; then
 			action "Redirecting FTP traffic" /sbin/ipchains -A $IPCHAINS_RULE
 		fi
+
 	else
         	msg_Already_Running frox
 	        exit 1

@@ -5,8 +5,6 @@ Version:	0.6.5
 Release:	2
 License:	GPL
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/frox/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.conf

@@ -13,6 +13,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
+BuildConflicts: kernel-headers < 2.3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

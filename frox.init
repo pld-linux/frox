@@ -15,42 +15,42 @@
 case "$1" in
   start)
 	# Check if the service is already running?
-        if [ ! -f /var/lock/subsys/frox ]; then
-	if [ ! "$IPCHAINS_RULE" ] && [ ! "$IPTABLES_RULE" ]; then
-		echo "Please edit /etc/sysconfig/frox !"
-		exit 1
-	fi
+	if [ ! -f /var/lock/subsys/frox ]; then
+		if [ ! "$IPCHAINS_RULE" ] && [ ! "$IPTABLES_RULE" ]; then
+			echo $(nls "Please edit /etc/sysconfig/frox")' !'
+			exit 1
+		fi
 		msg_starting frox
 		daemon frox -f /etc/frox.conf
-	        RETVAL=$?
-    		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/frox
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/frox
 		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ] ; then
-			action "Redirecting FTP traffic" /usr/sbin/iptables -t nat -A $IPTABLES_RULE
+			run_cmd "Redirecting FTP traffic" '/usr/sbin/iptables -t nat -A $IPTABLES_RULE'
 		fi
 		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ] ; then
-			action "Redirecting FTP traffic" /sbin/ipchains -A $IPCHAINS_RULE
+			run_cmd "Redirecting FTP traffic" '/sbin/ipchains -A $IPCHAINS_RULE'
 		fi
 
 	else
-        	msg_Already_Running frox
-	        exit 1
+		msg_already_running frox
+		exit 1
 	fi
 	;;
   stop)
-        # Stop daemons.
+	# Stop daemons.
 	if [ -f /var/lock/subsys/frox ]; then
 		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ] ; then
-			action "Removing FTP traffic redirection" /usr/sbin/iptables -D $IPTABLES_RULE
+			run_cmd "Removing FTP traffic redirection" '/usr/sbin/iptables -D $IPTABLES_RULE'
 		fi
 		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ] ; then
-			action "Removing FTP traffic redirection" /sbin/ipchains -D $IPCHAINS_RULE
+			run_cmd "Removing FTP traffic redirection" '/sbin/ipchains -D $IPCHAINS_RULE'
 		fi
-                msg_stopping frox
-                killproc frox
-                rm -f /var/lock/subsys/frox /var/run/frox.pid >/dev/null 2>&1
-        else
-		msg_Not_Running frox
-	        exit 1
+		msg_stopping frox
+		killproc frox
+		rm -f /var/lock/subsys/frox /var/run/frox.pid >/dev/null 2>&1
+	else
+		msg_not_running frox
+		exit 1
 	fi
 	;;
   status)
@@ -62,10 +62,9 @@ case "$1" in
 	$0 start
 	;;
   *)
-	msg_Usage "$0 {start|stop|restart|status}"
+	msg_usage "$0 {start|stop|restart|reload|status}"
 	exit 1
 	;;
 esac
 
 exit $RETVAL
-

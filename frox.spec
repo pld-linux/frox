@@ -1,4 +1,4 @@
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 Summary:	Transparent FTP proxy
 Name:		frox
 Version:	0.6.4
@@ -24,7 +24,6 @@ conversion of data connections.
 frox to prze¼roczyste FTP-proxy, posiada równie¿ wsparcie do 
 nie-transparentnych po³aczen, buforowania anonimowego ftp, i konwersji
 aktywne-pasywne polaczenia.
-
 
 %prep
 %setup -q

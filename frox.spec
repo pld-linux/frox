@@ -76,12 +76,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 if [ ! -n "`getgid frox`" ]; then
-       /usr/sbin/groupadd -g 97 -r -f frox 1>&2 || :
+	/usr/sbin/groupadd -g 97 -r -f frox 1>&2 || :
 fi
 
 if [ ! -n "`id -u frox 2>/dev/null`" ]; then
-       /usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
-               -g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
+	/usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
+		-g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
 fi
 
 %post
@@ -102,8 +102,8 @@ fi
 
 %postun
 if [ "$1" = "0" ]; then
-       /usr/sbin/userdel frox 2> /dev/null
-       /usr/sbin/groupdel frox 2> /dev/null
+	/usr/sbin/userdel frox 2> /dev/null
+	/usr/sbin/groupdel frox 2> /dev/null
 fi
 
 %files

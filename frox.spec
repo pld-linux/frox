@@ -1,4 +1,4 @@
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 Summary:	Transparent FTP proxy
 Name:		frox
 Version:	0.6.4
@@ -46,37 +46,19 @@ install %{SOURCE2}	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 gzip -9nf doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
 
 %pre
-if [ ! -n "`getgid frox`" ]; then
-	/usr/sbin/groupadd -g 97 -r -f frox 1>&2 || :
-fi
-
-if [ ! -n "`id -u frox 2>/dev/null`" ]; then
-	/usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
-		-g squid -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
-fi		
+GID=97; %groupadd
+UID=97; GROUP=squid; COMMENT="FROX ftp caching daemon"
+HOMEDIR=/var/cache/from; %useradd
 
 %post
-/sbin/chkconfig --add frox
-if [ -f /var/lock/subsys/frox ]; then
-	/etc/rc.d/init.d/frox restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/frox start\" to start frox daemons."
-fi
+DESC="frox daemons"; %chkconfig_add
 
 %postun
-# If package is being erased for the last time.
-if [ "$1" = "0" ]; then
-	/usr/sbin/userdel frox 2> /dev/null
-	/usr/sbin/groupdel frox 2> /dev/null
-fi		
+%userdel
+%groupdel
 
 %preun
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/frox ]; then
-		/etc/rc.d/init.d/frox stop >&2
-	fi
-	/sbin/chkconfig --del frox
-fi
+%chkconfig_del
 
 %clean
 rm -rf $RPM_BUILD_ROOT

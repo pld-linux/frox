@@ -5,7 +5,7 @@
 Summary:	Transparent FTP proxy
 Summary(pl):	Przezroczyste proxy FTP
 Name:		frox
-Version:	0.7.14
+Version:	0.7.15
 %if %{with kernel22}
 Release:	1@2.2
 %else
@@ -14,7 +14,7 @@ Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://frox.sourceforge.net/download/%{name}-%{version}.tar.bz2
-# Source0-md5:	95ef94973e94ba2cfb33f1004c74190e
+# Source0-md5:	fae2d10d6ac742f298dc5fb47a0e306f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
@@ -59,8 +59,9 @@ po³±czeñ z aktywnych na pasywne.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,/etc/sysconfig,%{_mandir}/man{5,8}} \
-	$RPM_BUILD_ROOT/var/lib/frox
+install -d $RPM_BUILD_ROOT{/var/lib/frox,%{_mandir}/man{5,8}} \
+	$RPM_BUILD_ROOT%{_sysconfdir}/{logrotate.d,sysconfig,rc.d/init.d} \
+	$RPM_BUILD_ROOT/var/log/{archiv/frox,frox}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -68,8 +69,15 @@ install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,/etc/sysconfig,%{_mandir}/man{5,8}} 
 install src/frox.conf	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 install doc/frox.man	$RPM_BUILD_ROOT%{_mandir}/man8/frox.8
 install doc/frox.conf.man	$RPM_BUILD_ROOT%{_mandir}/man5/frox.5
-install %{SOURCE1}	$RPM_BUILD_ROOT/etc/rc.d/init.d/frox
-install %{SOURCE2}	$RPM_BUILD_ROOT/etc/sysconfig/frox
+install %{SOURCE1}	$RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/frox
+install %{SOURCE2}	$RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/frox
+
+cat >$RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/frox << EOF
+/var/log/frox/frox-log {
+	olddir /var/log/archiv/frox
+	nocreate
+}
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,9 +117,12 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
-%attr(754,root,root) /etc/rc.d/init.d/frox
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/frox
+%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/frox
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/frox
 %attr(640,root,frox) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/frox.conf
+%{_sysconfdir}/logrotate.d/frox
 %attr(755,root,root) %{_sbindir}/frox
 %attr(770,root,frox) /var/lib/frox
+%attr(770,root,frox) /var/log/frox
+%attr(770,root,frox) /var/log/archiv/frox
 %{_mandir}/man*/*

@@ -1,7 +1,7 @@
 Summary:	Transparent FTP proxy
 Summary(pl):	Prze¼roczyste proxy FTP
 Name:		frox
-Version:	0.6.4
+Version:	0.6.5
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
@@ -11,7 +11,6 @@ Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/frox/%{name}-%{version}.tar.g
 Source1:	%{name}.init
 Source2:	%{name}.conf
 URL:		http://frox.sourceforge.net/
-BuildRequires:	kernel-headers >= 2.4.0
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,6 +27,8 @@ aktywne-pasywne polaczenia.
 %prep
 %setup -q
 %build
+aclocal
+autoconf
 %configure \
 	--enable-http-cache \
 	--enable-local-cache \

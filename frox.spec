@@ -1,4 +1,5 @@
 Summary:	Transparent FTP proxy
+Summary(pl):	Prze¼roczyste proxy FTP
 Name:		frox
 Version:	0.6.4
 Release:	1

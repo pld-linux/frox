@@ -30,7 +30,7 @@ aktywne-pasywne polaczenia.
 
 %build
 aclocal
-autoconf
+%{__autoconf}
 %configure \
 	--enable-http-cache \
 	--enable-local-cache \

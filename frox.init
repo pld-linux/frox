@@ -11,6 +11,7 @@
 # Configuration file.
 . /etc/sysconfig/frox
 
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -18,7 +19,7 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/frox ]; then
 		if [ ! "$IPCHAINS_RULE" ] && [ ! "$IPTABLES_RULE" ]; then
 			echo $(nls "Please edit /etc/sysconfig/frox")' !'
-			exit 1
+			exit 6
 		fi
 		msg_starting frox
 		daemon frox -f /etc/frox.conf
@@ -33,7 +34,6 @@ case "$1" in
 
 	else
 		msg_already_running frox
-		exit 1
 	fi
 	;;
   stop)
@@ -50,20 +50,20 @@ case "$1" in
 		rm -f /var/lock/subsys/frox /var/run/frox.pid >/dev/null 2>&1
 	else
 		msg_not_running frox
-		exit 1
 	fi
 	;;
   status)
 	status frox
 	exit $?
 	;;
-  restart|reload)
+  restart|force-reload)
 	$0 stop
 	$0 start
+	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|status}"
-	exit 1
+	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	exit 3
 	;;
 esac
 

@@ -50,8 +50,6 @@ install doc/frox.man	$RPM_BUILD_ROOT%{_mandir}/man8/frox.8
 install %{SOURCE1}	$RPM_BUILD_ROOT/etc/rc.d/init.d/frox
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 
-gzip -9nf doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -90,7 +88,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc doc/*.gz
+%doc doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
 %attr(754,root,root) /etc/rc.d/init.d/frox
 %attr(640,root,frox) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/frox.conf
 %attr(755,root,root) %{_sbindir}/frox

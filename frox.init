@@ -40,7 +40,7 @@ case "$1" in
 	# Stop daemons.
 	if [ -f /var/lock/subsys/frox ]; then
 		if [ -x /usr/sbin/iptables -a -n "$IPTABLES_RULE" ]; then
-			run_cmd "Removing FTP traffic redirection" /usr/sbin/iptables -D $IPTABLES_RULE
+			run_cmd "Removing FTP traffic redirection" /usr/sbin/iptables -t nat -D $IPTABLES_RULE
 		fi
 		if [ -x /sbin/ipchains -a -n "$IPCHAINS_RULE" ]; then
 			run_cmd "Removing FTP traffic redirection" /sbin/ipchains -D $IPCHAINS_RULE

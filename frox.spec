@@ -15,6 +15,7 @@ Release:	1@%{_kernel_series}
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://frox.sourceforge.net/download/%{name}-%{version}.tar.bz2
+# Source0-md5:	1df290dbb766f5ce661eb52d5ddf7ca5
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch

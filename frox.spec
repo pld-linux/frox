@@ -3,7 +3,6 @@
 %define		_kernel24	%(echo %{_kernel_ver} | grep -q '2\.[012]\.' ; echo $?)
 %if %{_kernel24}
 %define		_kernel_series	2.4
-%define		_with_pivot_root 1
 %else
 %define		_kernel_series	2.2
 %endif
@@ -22,8 +21,14 @@ Patch0:		%{name}-config.patch
 URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
-Prereq:		rc-scripts
-Prereq:		/sbin/chkconfig
+PreReq:		rc-scripts
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/bin/id
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -41,7 +46,7 @@ aktywne-pasywne polaczenia.
 %patch0 -p1
 
 %build
-aclocal
+%{__aclocal}
 %{__autoconf}
 %configure \
 	--enable-http-cache \
@@ -75,7 +80,7 @@ fi
 
 if [ ! -n "`id -u frox 2>/dev/null`" ]; then
 	/usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
-		-g squid -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
+		-g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
 fi
 
 %post
@@ -95,7 +100,6 @@ if [ "$1" = "0" ]; then
 fi
 
 %postun
-# If package is being erased for the last time.
 if [ "$1" = "0" ]; then
 	/usr/sbin/userdel frox 2> /dev/null
 	/usr/sbin/groupdel frox 2> /dev/null

@@ -23,12 +23,12 @@ URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 PreReq:		rc-scripts
-Requires(pre): /usr/bin/getgid
-Requires(pre): /bin/id
-Requires(pre): /usr/sbin/groupadd
-Requires(pre): /usr/sbin/useradd
-Requires(postun):      /usr/sbin/userdel
-Requires(postun):      /usr/sbin/groupdel
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/bin/id
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
 Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 

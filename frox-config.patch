@@ -1,0 +1,23 @@
+diff -durN frox-0.7.5.orig/src/frox.conf frox-0.7.5/src/frox.conf
+--- frox-0.7.5.orig/src/frox.conf	Fri May  3 23:45:58 2002
++++ frox-0.7.5/src/frox.conf	Mon Sep 23 13:47:26 2002
+@@ -54,8 +54,8 @@
+ # you really want to run as root (not a good idea) you must say so
+ # specifically, and have compiled with --enable-run-as-root.
+ #
+-# User nobody
+-# Group nogroup
++User frox
++Group frox
+ 
+ # This is frox's working directory - it must be specified. Temporary
+ # files and sockets will be created here. If you are using local
+@@ -64,7 +64,7 @@
+ # also chroot to this dir on startup. To avoid this you must specifically 
+ # set DontChroot to Yes.
+ #
+-# WorkingDir /usr/local/lib/frox
++WorkingDir /var/lib/frox
+ # DontChroot Yes
+ 
+ # Logging level. 0=No logging. 5=Critical errors only. 10= All errors. 

@@ -111,7 +111,7 @@ fi
 %defattr(644,root,root,755)
 %doc doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
 %attr(754,root,root) /etc/rc.d/init.d/frox
-%attr(750,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/frox
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/frox
 %attr(640,root,frox) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/frox.conf
 %attr(755,root,root) %{_sbindir}/frox
 %attr(770,root,frox) /var/lib/frox

@@ -14,6 +14,7 @@ URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 Prereq:		rc-scripts
+Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -53,6 +54,9 @@ install %{SOURCE2}	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 
 gzip -9nf doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %pre
 if [ ! -n "`getgid frox`" ]; then
 	/usr/sbin/groupadd -g 97 -r -f frox 1>&2 || :
@@ -71,13 +75,6 @@ else
 	echo "Run \"/etc/rc.d/init.d/frox start\" to start frox daemons."
 fi
 
-%postun
-# If package is being erased for the last time.
-if [ "$1" = "0" ]; then
-	/usr/sbin/userdel frox 2> /dev/null
-	/usr/sbin/groupdel frox 2> /dev/null
-fi		
-
 %preun
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/frox ]; then
@@ -86,8 +83,12 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del frox
 fi
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+%postun
+# If package is being erased for the last time.
+if [ "$1" = "0" ]; then
+	/usr/sbin/userdel frox 2> /dev/null
+	/usr/sbin/groupdel frox 2> /dev/null
+fi		
 
 %files
 %defattr(644,root,root,755)

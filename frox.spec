@@ -21,14 +21,19 @@ Patch0:		%{name}-config.patch
 URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	rpmbuild(macros) >= 1.159
 PreReq:		rc-scripts
-Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/groupmod
 Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/userdel
+Requires(pre):	/usr/sbin/usermod
 Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(post,preun):	/sbin/chkconfig
+Provides:	group(frox)
+Provides:	user(frox)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,13 +88,32 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ ! -n "`getgid frox`" ]; then
-	/usr/sbin/groupadd -g 97 -r -f frox 1>&2 || :
+if [ -n "`/usr/bin/getgid frox`" ]; then
+	if [ "`/usr/bin/getgid frox`" = 97 ]; then
+		/usr/sbin/groupmod -g 103 frox
+	else
+		if [ "`/usr/bin/getgid frox`" != 103 ]; then
+			echo "Error: group gnunet doesn't have gid=103. Correct this before installing frox." 1>&2
+			exit 1
+		fi
+	fi
+else
+	/usr/sbin/groupadd -g 103 frox 1>&2
 fi
-
-if [ ! -n "`id -u frox 2>/dev/null`" ]; then
-	/usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
-		-g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
+if [ -n "`/bin/id -u frox 2>/dev/null`" ]; then
+	if [ "`/bin/id -u frox`" = 97 ]; then
+		/usr/sbin/usermod -u 103 frox
+		chown -R frox:frox /var/cache/frox ||:
+		chown -R root:frox /var/log/frox /var/log/archiv/frox ||:
+	else
+		if [ "`/bin/id -u frox`" != 103 ]; then
+			echo "Error: user frox doesn't have uid=103. Correct this before installing frox." 1>&2
+			exit 1
+		fi
+	fi
+else
+	/usr/sbin/useradd -u 103 -s /bin/false -g frox \
+		-c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2
 fi
 
 %post
@@ -110,8 +134,8 @@ fi
 
 %postun
 if [ "$1" = "0" ]; then
-	/usr/sbin/userdel frox 2> /dev/null
-	/usr/sbin/groupdel frox 2> /dev/null
+	%userremove frox
+	%groupremove frox
 fi
 
 %files
@@ -125,4 +149,5 @@ fi
 %attr(770,root,frox) /var/lib/frox
 %attr(770,root,frox) /var/log/frox
 %attr(770,root,frox) /var/log/archiv/frox
+%attr(770,frox,frox) /var/cache/frox
 %{_mandir}/man*/*

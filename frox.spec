@@ -1,4 +1,4 @@
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 Summary:	Transparent FTP proxy
 Name:		frox
 Version:	0.6.4
@@ -10,10 +10,16 @@ Group(pl):	Sieciowe/Serwery
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/frox/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.conf
+URL:		http://frox.sourceforge.net/
+BuildRequires:	kernel-headers >= 2.4.0
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
+frox is transparent FTP proxy. It also has support for non-transparent
+connections, caching of anonymous ftp, and active --> passive
+conversion of data connections.
+
 
 %prep
 %setup -q
@@ -28,14 +34,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/rc.d/init.d,%{_mandir}/man8}
-install -d $RPM_BUILD_ROOT/var/cache/frox/0{1,2,3,4,5,6,7,8,9,0,a,b,c,d,e,f}
+install -d $RPM_BUILD_ROOT{/etc/rc.d/init.d,%{_mandir}/man8} \
+	$RPM_BUILD_ROOT/var/cache/frox/0{1,2,3,4,5,6,7,8,9,0,a,b,c,d,e,f}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 install doc/frox.man	$RPM_BUILD_ROOT%{_mandir}/man8/frox.8
-install %{SOURCE1}	$RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/frox
+install %{SOURCE1}	$RPM_BUILD_ROOT/etc/rc.d/init.d/frox
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 
 gzip -9nf doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}

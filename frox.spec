@@ -1,17 +1,16 @@
-
-%define		_kernel_ver	%(grep UTS_RELEASE %{_kernelsrcdir}/include/linux/version.h 2>/dev/null | cut -d'"' -f2)
-%define		_kernel24	%(echo %{_kernel_ver} | grep -qv '2\.4\.' ; echo $?)
-%if %{_kernel24}
-%define		_kernel_series	2.4
-%else
-%define		_kernel_series	2.2
-%endif
-
+#
+# Conditional build:
+%bcond_with	kernel22
+#
 Summary:	Transparent FTP proxy
 Summary(pl):	Przezroczyste proxy FTP
 Name:		frox
 Version:	0.7.14
-Release:	1@%{_kernel_series}
+%if %{with kernel22}
+Release:	1@2.2
+%else
+Release:	1
+%endif
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://frox.sourceforge.net/download/%{name}-%{version}.tar.bz2
@@ -52,8 +51,8 @@ po³±czeñ z aktywnych na pasywne.
 %configure \
 	--enable-http-cache \
 	--enable-local-cache \
-	%{?_kernel24:--enable-libiptc} \
-	%{?!_kernel24:--disable-libiptc} \
+	%{?!with_kernel22:--enable-libiptc} \
+	%{?with_kernel22:--disable-libiptc} \
 	--enable-transparent-data \
 	--enable-configfile=%{_sysconfdir}/frox.conf
 %{__make}

@@ -2,7 +2,7 @@ Summary:	Transparent FTP proxy
 Summary(pl):	Prze¼roczyste proxy FTP
 Name:		frox
 Version:	0.6.5
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server

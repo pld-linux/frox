@@ -22,7 +22,12 @@ URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 PreReq:		rc-scripts
-Requires(pre):	user-frox
+Requires(pre): /usr/bin/getgid
+Requires(pre): /bin/id
+Requires(pre): /usr/sbin/groupadd
+Requires(pre): /usr/sbin/useradd
+Requires(postun):      /usr/sbin/userdel
+Requires(postun):      /usr/sbin/groupdel
 Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -68,6 +73,16 @@ install %{SOURCE2}	$RPM_BUILD_ROOT/etc/sysconfig/frox
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre
+if [ ! -n "`getgid frox`" ]; then
+       /usr/sbin/groupadd -g 97 -r -f frox 1>&2 || :
+fi
+
+if [ ! -n "`id -u frox 2>/dev/null`" ]; then
+       /usr/sbin/useradd -M -o -r -u 97 -s /bin/false \
+               -g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2 || :
+fi
+
 %post
 /sbin/chkconfig --add frox
 if [ -f /var/lock/subsys/frox ]; then
@@ -82,6 +97,12 @@ if [ "$1" = "0" ]; then
 		/etc/rc.d/init.d/frox stop >&2
 	fi
 	/sbin/chkconfig --del frox
+fi
+
+%postun
+if [ "$1" = "0" ]; then
+       /usr/sbin/userdel frox 2> /dev/null
+       /usr/sbin/groupdel frox 2> /dev/null
 fi
 
 %files

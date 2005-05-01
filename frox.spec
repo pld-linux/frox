@@ -21,7 +21,7 @@ Patch0:		%{name}-config.patch
 URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 PreReq:		rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
@@ -88,32 +88,18 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ -n "`/usr/bin/getgid frox`" ]; then
-	if [ "`/usr/bin/getgid frox`" = 97 ]; then
-		/usr/sbin/groupmod -g 103 frox
-	else
-		if [ "`/usr/bin/getgid frox`" != 103 ]; then
-			echo "Error: group gnunet doesn't have gid=103. Correct this before installing frox." 1>&2
-			exit 1
-		fi
-	fi
-else
-	/usr/sbin/groupadd -g 103 frox 1>&2
+%groupadd -g 103 frox
+# TODO: should be in trigger
+if [ "`/usr/bin/getgid frox`" = 97 ]; then
+	/usr/sbin/groupmod -g 103 frox
 fi
-if [ -n "`/bin/id -u frox 2>/dev/null`" ]; then
-	if [ "`/bin/id -u frox`" = 97 ]; then
-		/usr/sbin/usermod -u 103 frox
-		chown -R frox:frox /var/cache/frox ||:
-		chown -R root:frox /var/log/frox /var/log/archiv/frox ||:
-	else
-		if [ "`/bin/id -u frox`" != 103 ]; then
-			echo "Error: user frox doesn't have uid=103. Correct this before installing frox." 1>&2
-			exit 1
-		fi
-	fi
-else
-	/usr/sbin/useradd -u 103 -s /bin/false -g frox \
-		-c "FROX ftp caching daemon" -d /var/cache/frox frox 1>&2
+
+%useradd -u 103 -s /bin/false -g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox
+# FIXME: should be in trigger
+if [ "`/bin/id -u frox`" = 97 ]; then
+	/usr/sbin/usermod -u 103 frox
+	chown -R frox:frox /var/cache/frox ||:
+	chown -R root:frox /var/log/frox /var/log/archiv/frox ||:
 fi
 
 %post

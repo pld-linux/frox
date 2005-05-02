@@ -127,10 +127,10 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/frox
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/frox
-%attr(640,root,frox) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/frox.conf
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/logrotate.d/frox
+%attr(754,root,root) /etc/rc.d/init.d/frox
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/frox
+%attr(640,root,frox) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/frox.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/logrotate.d/frox
 %attr(755,root,root) %{_sbindir}/frox
 %attr(770,root,frox) /var/lib/frox
 %attr(770,root,frox) /var/log/frox

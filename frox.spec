@@ -65,7 +65,7 @@ po³±czeñ z aktywnych na pasywne.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/var/lib/frox,%{_mandir}/man{5,8}} \
-	$RPM_BUILD_ROOT%{_sysconfdir}/{logrotate.d,sysconfig,rc.d/init.d} \
+	$RPM_BUILD_ROOT/etc/{logrotate.d,sysconfig,rc.d/init.d} \
 	$RPM_BUILD_ROOT/var/log/{archiv/frox,frox}
 
 %{__make} install \
@@ -74,8 +74,8 @@ install -d $RPM_BUILD_ROOT{/var/lib/frox,%{_mandir}/man{5,8}} \
 install src/frox.conf	$RPM_BUILD_ROOT%{_sysconfdir}/frox.conf
 install doc/frox.man	$RPM_BUILD_ROOT%{_mandir}/man8/frox.8
 install doc/frox.conf.man	$RPM_BUILD_ROOT%{_mandir}/man5/frox.5
-install %{SOURCE1}	$RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/frox
-install %{SOURCE2}	$RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/frox
+install %{SOURCE1}	$RPM_BUILD_ROOT/etc/rc.d/init.d/frox
+install %{SOURCE2}	$RPM_BUILD_ROOT/etc/sysconfig/frox
 
 cat >$RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/frox << EOF
 /var/log/frox/frox-log {
@@ -130,7 +130,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/frox
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/frox
 %attr(640,root,frox) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/frox.conf
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/logrotate.d/frox
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/frox
 %attr(755,root,root) %{_sbindir}/frox
 %attr(770,root,frox) /var/lib/frox
 %attr(770,root,frox) /var/log/frox

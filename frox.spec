@@ -5,7 +5,7 @@
 Summary:	Transparent FTP proxy
 Summary(pl):	Przezroczyste proxy FTP
 Name:		frox
-Version:	0.7.15
+Version:	0.7.18
 %if %{with kernel22}
 Release:	1@2.2
 %else
@@ -14,7 +14,7 @@ Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://frox.sourceforge.net/download/%{name}-%{version}.tar.bz2
-# Source0-md5:	fae2d10d6ac742f298dc5fb47a0e306f
+# Source0-md5:	d30c35b9820d706ff2f9a6ab3b501247
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-config.patch
@@ -126,7 +126,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc doc/{FAQ,README.transdata,RELEASE,SECURITY,TODO}
+%doc doc/{ChangeLog,FAQ,README.transdata,RELEASE,SECURITY,TODO}
 %attr(754,root,root) /etc/rc.d/init.d/frox
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/frox
 %attr(640,root,frox) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/frox.conf

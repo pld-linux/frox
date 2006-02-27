@@ -88,19 +88,17 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-%groupadd -g 103 frox
-# TODO: should be in trigger
 if [ "`/usr/bin/getgid frox`" = 97 ]; then
 	/usr/sbin/groupmod -g 103 frox
 fi
+%groupadd -g 103 frox
 
-%useradd -u 103 -s /bin/false -g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox
-# FIXME: should be in trigger
-if [ "`/bin/id -u frox`" = 97 ]; then
+if [ -n "`id -u frox 2>/dev/null`" ] && [ "`/bin/id -u frox`" = 97 ]; then
 	/usr/sbin/usermod -u 103 frox
 	chown -R frox:frox /var/cache/frox ||:
 	chown -R root:frox /var/log/frox /var/log/archiv/frox ||:
 fi
+%useradd -u 103 -s /bin/false -g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox
 
 %post
 /sbin/chkconfig --add frox

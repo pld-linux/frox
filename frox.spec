@@ -21,17 +21,17 @@ Patch0:		%{name}-config.patch
 URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	rpmbuild(macros) >= 1.202
-PreReq:		rc-scripts
+BuildRequires:	rpmbuild(macros) >= 1.268
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/groupmod
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/usermod
-Requires(postun):	/usr/sbin/groupdel
-Requires(postun):	/usr/sbin/userdel
-Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 Provides:	group(frox)
 Provides:	user(frox)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -102,17 +102,11 @@ fi
 
 %post
 /sbin/chkconfig --add frox
-if [ -f /var/lock/subsys/frox ]; then
-	/etc/rc.d/init.d/frox restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/frox start\" to start frox daemons."
-fi
+%service frox restart "frox daemons"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/frox ]; then
-		/etc/rc.d/init.d/frox stop >&2
-	fi
+	%service frox stop
 	/sbin/chkconfig --del frox
 fi
 

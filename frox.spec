@@ -1,3 +1,5 @@
+# TODO
+# - doesn't build with current (iptables?)
 #
 # Conditional build:
 %bcond_with	kernel22

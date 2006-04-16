@@ -1,18 +1,11 @@
-# TODO
-# - doesn't build with current (iptables?)
-#
 # Conditional build:
-%bcond_with	kernel22
+%bcond_without	libiptc		# doesn't build with 2.2 kernel
 #
 Summary:	Transparent FTP proxy
 Summary(pl):	Przezroczyste proxy FTP
 Name:		frox
 Version:	0.7.18
-%if %{with kernel22}
-Release:	1@2.2
-%else
-Release:	1
-%endif
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://frox.sourceforge.net/download/%{name}-%{version}.tar.bz2
@@ -23,6 +16,7 @@ Patch0:		%{name}-config.patch
 URL:		http://frox.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	linux-libc-headers >= 7:2.6.12.0-12
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
@@ -58,8 +52,7 @@ po³±czeñ z aktywnych na pasywne.
 %configure \
 	--enable-http-cache \
 	--enable-local-cache \
-	%{?!with_kernel22:--enable-libiptc} \
-	%{?with_kernel22:--disable-libiptc} \
+	--%{!?with_iptc:dis}%{?with_iptc:en}able-libiptc \
 	--enable-transparent-data \
 	--enable-configfile=%{_sysconfdir}/frox.conf
 %{__make}

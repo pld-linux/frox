@@ -2,7 +2,7 @@
 %bcond_without	libiptc		# doesn't build with 2.2 kernel
 #
 Summary:	Transparent FTP proxy
-Summary(pl):	Przezroczyste proxy FTP
+Summary(pl.UTF-8):   Przezroczyste proxy FTP
 Name:		frox
 Version:	0.7.18
 Release:	3
@@ -37,10 +37,10 @@ Frox is transparent FTP proxy. It also has support for non-transparent
 connections, caching of anonymous ftp, and active --> passive
 conversion of data connections.
 
-%description -l pl
-Frox to przezroczyste proxy FTP, posiada równie¿ wsparcie do
-nieprzezroczystych po³±czeñ, buforowania anonimowego ftp, i konwersji
-po³±czeñ z aktywnych na pasywne.
+%description -l pl.UTF-8
+Frox to przezroczyste proxy FTP, posiada rÃ³wnieÅ¼ wsparcie do
+nieprzezroczystych poÅ‚Ä…czeÅ„, buforowania anonimowego ftp, i konwersji
+poÅ‚Ä…czeÅ„ z aktywnych na pasywne.
 
 %prep
 %setup -q

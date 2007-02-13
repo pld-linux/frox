@@ -2,7 +2,7 @@
 %bcond_without	libiptc		# doesn't build with 2.2 kernel
 #
 Summary:	Transparent FTP proxy
-Summary(pl.UTF-8):   Przezroczyste proxy FTP
+Summary(pl.UTF-8):	Przezroczyste proxy FTP
 Name:		frox
 Version:	0.7.18
 Release:	3

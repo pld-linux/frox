@@ -61,7 +61,7 @@ połączeń z aktywnych na pasywne.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/var/lib/frox,%{_mandir}/man{5,8}} \
 	$RPM_BUILD_ROOT/etc/{logrotate.d,sysconfig,rc.d/init.d} \
-	$RPM_BUILD_ROOT/var/{log/{archiv/frox,frox},cache/frox}
+	$RPM_BUILD_ROOT/var/{log/{archive/frox,frox},cache/frox}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT

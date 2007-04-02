@@ -74,7 +74,7 @@ install %{SOURCE2}	$RPM_BUILD_ROOT/etc/sysconfig/frox
 
 cat >$RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/frox << EOF
 /var/log/frox/frox-log {
-	olddir /var/log/archiv/frox
+	olddir /var/log/archive/frox
 	nocreate
 }
 EOF
@@ -91,7 +91,7 @@ fi
 if [ -n "`id -u frox 2>/dev/null`" ] && [ "`/bin/id -u frox`" = 97 ]; then
 	/usr/sbin/usermod -u 103 frox
 	chown -R frox:frox /var/cache/frox ||:
-	chown -R root:frox /var/log/frox /var/log/archiv/frox ||:
+	chown -R root:frox /var/log/frox /var/log/archive/frox ||:
 fi
 %useradd -u 103 -s /bin/false -g frox -c "FROX ftp caching daemon" -d /var/cache/frox frox
 
@@ -121,6 +121,6 @@ fi
 %attr(755,root,root) %{_sbindir}/frox
 %attr(770,root,frox) /var/lib/frox
 %attr(770,root,frox) /var/log/frox
-%attr(770,root,frox) /var/log/archiv/frox
+%attr(770,root,frox) /var/log/archive/frox
 %attr(770,frox,frox) /var/cache/frox
 %{_mandir}/man*/*
